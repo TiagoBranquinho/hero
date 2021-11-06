@@ -12,21 +12,21 @@ import java.io.IOException;
 import static com.googlecode.lanterna.input.KeyType.ArrowDown;
 
 public class Game {
-        private Screen screen;
-        private int x = 10;
-        private int y = 10;
+        public Screen screen;
+        private Hero hero;
         public Game() {
-        int columns = 40;
-        int rows = 20;
-        try {
-            TerminalSize terminalSize = new TerminalSize(columns, rows);
-            DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
-            Terminal terminal = terminalFactory.createTerminal();
-            Screen screen = new TerminalScreen(terminal);
-            screen.setCursorPosition(null);
-            screen.startScreen();
-            screen.doResizeIfNecessary();
-            this.screen = screen;
+            int columns = 40;
+            int rows = 20;
+            try {
+                 TerminalSize terminalSize = new TerminalSize(columns, rows);
+                 DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
+                 Terminal terminal = terminalFactory.createTerminal();
+                 Screen screen = new TerminalScreen(terminal);
+                 screen.setCursorPosition(null);
+                 screen.startScreen();
+                 screen.doResizeIfNecessary();
+                 this.screen = screen;
+                 hero = new Hero(10, 10);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class Game {
 
     private void draw() throws IOException {
         screen.clear();
-        screen.setCharacter(x, y, TextCharacter.fromCharacter('X')[0]);
+        hero.draw(screen);
         screen.refresh();
     }
     public void run() throws IOException {
@@ -50,19 +50,19 @@ public class Game {
     private void processKey(com.googlecode.lanterna.input.KeyStroke key) throws IOException {
         switch (key.getKeyType()) {
             case ArrowDown: {
-                y++;
+                hero.moveDown();
                 break;
             }
             case ArrowUp: {
-                y--;
+                hero.moveUp();
                 break;
             }
             case ArrowLeft: {
-                x--;
+                hero.moveLeft();
                 break;
             }
             case ArrowRight: {
-                x++;
+                hero.moveRight();
                 break;
             }
             case Character:
