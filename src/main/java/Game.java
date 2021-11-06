@@ -9,11 +9,10 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 
-import static com.googlecode.lanterna.input.KeyType.ArrowDown;
 
 public class Game {
         public Screen screen;
-        private Hero hero;
+        public Hero hero;
         public Game() {
             int columns = 40;
             int rows = 20;
@@ -26,7 +25,8 @@ public class Game {
                  screen.startScreen();
                  screen.doResizeIfNecessary();
                  this.screen = screen;
-                 hero = new Hero(10, 10);
+
+                 hero = new Hero(new Position(10,10));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,19 +50,19 @@ public class Game {
     private void processKey(com.googlecode.lanterna.input.KeyStroke key) throws IOException {
         switch (key.getKeyType()) {
             case ArrowDown: {
-                hero.moveDown();
+                moveHero(hero.moveDown());
                 break;
             }
             case ArrowUp: {
-                hero.moveUp();
+                moveHero(hero.moveUp());
                 break;
             }
             case ArrowLeft: {
-                hero.moveLeft();
+                moveHero(hero.moveLeft());
                 break;
             }
             case ArrowRight: {
-                hero.moveRight();
+                moveHero(hero.moveRight());
                 break;
             }
             case Character:
@@ -72,5 +72,8 @@ public class Game {
                 break;
             }
         }
+    }
+    private void moveHero(Position position) {
+        hero.setPosition(position);
     }
 }
