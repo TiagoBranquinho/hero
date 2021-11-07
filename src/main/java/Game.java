@@ -1,5 +1,8 @@
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
@@ -15,19 +18,20 @@ public class Game {
         public Hero hero;
         public Arena arena;
         public Game() {
-            int columns = 40;
-            int rows = 20;
+            int width = 40;
+            int height = 20;
             try {
-                 TerminalSize terminalSize = new TerminalSize(columns, rows);
+                 TerminalSize terminalSize = new TerminalSize(width, height);
                  DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
                  Terminal terminal = terminalFactory.createTerminal();
                  Screen screen = new TerminalScreen(terminal);
                  screen.setCursorPosition(null);
                  screen.startScreen();
                  screen.doResizeIfNecessary();
+                 TextGraphics graphics = screen.newTextGraphics();
                  this.screen = screen;
                  hero = new Hero(new Position(10,10));
-                 arena = new Arena(columns,rows,hero,screen);
+                 arena = new Arena(width,height,hero, screen.newTextGraphics());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +39,7 @@ public class Game {
 
     private void draw() throws IOException {
         screen.clear();
-        arena.draw(screen);
+        arena.draw(screen.newTextGraphics());
         screen.refresh();
     }
     public void run() throws IOException {
@@ -44,6 +48,8 @@ public class Game {
             KeyStroke key = screen.readInput();
             if(key.getKeyType() == KeyType.EOF)
                 break;
+            if(key.getKeyType() == KeyType.Character && key.getCharacter() == 'q')
+                screen.close();
             arena.processKey(key);
         }
     }
