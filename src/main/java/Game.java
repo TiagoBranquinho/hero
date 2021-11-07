@@ -13,6 +13,7 @@ import java.io.IOException;
 public class Game {
         public Screen screen;
         public Hero hero;
+        public Arena arena;
         public Game() {
             int columns = 40;
             int rows = 20;
@@ -25,8 +26,8 @@ public class Game {
                  screen.startScreen();
                  screen.doResizeIfNecessary();
                  this.screen = screen;
-
                  hero = new Hero(new Position(10,10));
+                 arena = new Arena(columns,rows,hero,screen);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,7 +35,7 @@ public class Game {
 
     private void draw() throws IOException {
         screen.clear();
-        hero.draw(screen);
+        arena.draw(screen);
         screen.refresh();
     }
     public void run() throws IOException {
@@ -43,37 +44,12 @@ public class Game {
             KeyStroke key = screen.readInput();
             if(key.getKeyType() == KeyType.EOF)
                 break;
-            processKey(key);
+            arena.processKey(key);
         }
     }
 
     private void processKey(com.googlecode.lanterna.input.KeyStroke key) throws IOException {
-        switch (key.getKeyType()) {
-            case ArrowDown: {
-                moveHero(hero.moveDown());
-                break;
-            }
-            case ArrowUp: {
-                moveHero(hero.moveUp());
-                break;
-            }
-            case ArrowLeft: {
-                moveHero(hero.moveLeft());
-                break;
-            }
-            case ArrowRight: {
-                moveHero(hero.moveRight());
-                break;
-            }
-            case Character:
-            {
-                if(key.getCharacter() == 'q')
-                    screen.close();
-                break;
-            }
-        }
+        arena.processKey(key);
     }
-    private void moveHero(Position position) {
-        hero.setPosition(position);
-    }
+
 }
