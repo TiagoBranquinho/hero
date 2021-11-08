@@ -53,9 +53,4 @@ public class Game {
             arena.processKey(key);
         }
     }
-
-    private void processKey(com.googlecode.lanterna.input.KeyStroke key) throws IOException {
-        arena.processKey(key);
-    }
-
 }
