@@ -1,22 +1,20 @@
-import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 
-public class Wall {
-    private Position position = new Position(0,0);
+public class Wall extends Element{
 
     public Wall(int x, int y){
-        position.setX(x);
-        position.setY(y);
+        super(x,y);
     }
     public void draw(TextGraphics graphics)
     {
-        graphics.setForegroundColor(TextColor.Factory.fromString("#F7E731"));
-        graphics.putString(new TerminalPosition(position.getX(),position.getY()), "|");
+        String color = "#F7E731";
+        String symbol = "|";
+        graphics.setForegroundColor(TextColor.Factory.fromString(color));
+        graphics.putString(new TerminalPosition(position.getX(),position.getY()), symbol);
     }
-
-    public Position getPosition() {
+    public Position getPosition(){
         return position;
     }
 }

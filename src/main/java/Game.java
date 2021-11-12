@@ -30,7 +30,7 @@ public class Game {
                  screen.doResizeIfNecessary();
                  TextGraphics graphics = screen.newTextGraphics();
                  this.screen = screen;
-                 hero = new Hero(new Position(10,10));
+                 hero = new Hero(10,10);
                  arena = new Arena(width,height,hero, screen.newTextGraphics());
         } catch (IOException e) {
             e.printStackTrace();
