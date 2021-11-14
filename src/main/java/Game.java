@@ -15,7 +15,6 @@ import java.io.IOException;
 
 public class Game {
     public Screen screen;
-    public Hero hero;
     public Arena arena;
     public Game() {
         int width = 40;
@@ -28,10 +27,8 @@ public class Game {
             screen.setCursorPosition(null);
             screen.startScreen();
             screen.doResizeIfNecessary();
-            TextGraphics graphics = screen.newTextGraphics();
             this.screen = screen;
-            hero = new Hero(10,10);
-            arena = new Arena(width,height,hero, screen.newTextGraphics());
+            arena = new Arena(width,height, screen);
         } catch (IOException e) {
             e.printStackTrace();
         }

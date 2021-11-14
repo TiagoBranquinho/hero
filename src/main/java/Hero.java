@@ -32,8 +32,4 @@ public class Hero extends Element{
         graphics.enableModifiers(SGR.BOLD);
         graphics.putString(new TerminalPosition(getPosition().getX(),getPosition().getY()), symbol);
     }
-    public void setPosition(Position position) {
-        this.position.setX(position.getX());
-        this.position.setY(position.getY());
-    }
 }
