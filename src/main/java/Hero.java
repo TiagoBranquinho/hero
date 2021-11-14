@@ -1,9 +1,7 @@
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.screen.Screen;
 
 
 public class Hero extends Element{
@@ -28,7 +26,7 @@ public class Hero extends Element{
         return new Position(getPosition().getX() + 1,getPosition().getY());
     }
     public void draw(TextGraphics graphics) {
-        String color = "#B52914";
+        String color = "#00FFFB";
         String symbol = "X";
         graphics.setForegroundColor(TextColor.Factory.fromString(color));
         graphics.enableModifiers(SGR.BOLD);
@@ -37,9 +35,5 @@ public class Hero extends Element{
     public void setPosition(Position position) {
         this.position.setX(position.getX());
         this.position.setY(position.getY());
-    }
-
-    public Position getPosition(){
-        return position;
     }
 }

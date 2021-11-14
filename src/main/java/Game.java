@@ -14,24 +14,24 @@ import java.io.IOException;
 
 
 public class Game {
-        public Screen screen;
-        public Hero hero;
-        public Arena arena;
-        public Game() {
-            int width = 40;
-            int height = 20;
-            try {
-                 TerminalSize terminalSize = new TerminalSize(width, height);
-                 DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
-                 Terminal terminal = terminalFactory.createTerminal();
-                 Screen screen = new TerminalScreen(terminal);
-                 screen.setCursorPosition(null);
-                 screen.startScreen();
-                 screen.doResizeIfNecessary();
-                 TextGraphics graphics = screen.newTextGraphics();
-                 this.screen = screen;
-                 hero = new Hero(10,10);
-                 arena = new Arena(width,height,hero, screen.newTextGraphics());
+    public Screen screen;
+    public Hero hero;
+    public Arena arena;
+    public Game() {
+        int width = 40;
+        int height = 20;
+        try {
+            TerminalSize terminalSize = new TerminalSize(width, height);
+            DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
+            Terminal terminal = terminalFactory.createTerminal();
+            Screen screen = new TerminalScreen(terminal);
+            screen.setCursorPosition(null);
+            screen.startScreen();
+            screen.doResizeIfNecessary();
+            TextGraphics graphics = screen.newTextGraphics();
+            this.screen = screen;
+            hero = new Hero(10,10);
+            arena = new Arena(width,height,hero, screen.newTextGraphics());
         } catch (IOException e) {
             e.printStackTrace();
         }

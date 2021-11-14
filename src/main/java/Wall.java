@@ -9,12 +9,9 @@ public class Wall extends Element{
     }
     public void draw(TextGraphics graphics)
     {
-        String color = "#F7E731";
+        String color = "#FF17F3";
         String symbol = "|";
         graphics.setForegroundColor(TextColor.Factory.fromString(color));
         graphics.putString(new TerminalPosition(position.getX(),position.getY()), symbol);
-    }
-    public Position getPosition(){
-        return position;
     }
 }

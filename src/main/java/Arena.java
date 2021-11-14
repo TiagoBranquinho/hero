@@ -1,11 +1,11 @@
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.screen.Screen;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Arena {
     private int width;
@@ -13,6 +13,7 @@ public class Arena {
     private Hero hero;
     private TextGraphics graphics;
     private List<Wall> walls;
+    private List<Coin> coins;
 
     public Arena(int width, int height, Hero hero, TextGraphics graphics) {
         this.width = width;
@@ -20,6 +21,7 @@ public class Arena {
         this.hero = hero;
         this.graphics = graphics;
         this.walls = createWalls();
+        this.coins = createCoins();
     }
 
     private List<Wall> createWalls() {
@@ -35,10 +37,26 @@ public class Arena {
         return walls;
     }
 
+    private List<Coin> createCoins() {
+        int x,y;
+        Random random = new Random();
+        List<Coin> coins = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            do{
+                x = random.nextInt(width - 2) + 1;
+                y = random.nextInt(height - 2) + 1;
+            } while(x == hero.getPosition().getX() && y == hero.getPosition().getY());
+            coins.add(new Coin(x,y));
+        }
+        return coins;
+    }
+
     public void draw(TextGraphics graphics) {
-        graphics.setBackgroundColor(TextColor.Factory.fromString("#0F19A3"));
+        graphics.setBackgroundColor(TextColor.Factory.fromString("#6F7080"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
         hero.draw(graphics);
+        for(Coin coin : coins)
+            coin.draw(graphics);
         for (Wall wall : walls)
             wall.draw(graphics);
     }
@@ -65,8 +83,20 @@ public class Arena {
     }
 
     public void moveHero(Position position) {
-        if (canHeroMove(position))
+        if (canHeroMove(position)) {
+            retrieveCoins(position);
             hero.setPosition(position);
+        }
+    }
+
+    private List<Coin> retrieveCoins(Position position) {
+        for(Coin coin : coins){
+            if(coin.getPosition().equals(position)) {
+                coins.remove(coin);
+                return coins;
+            }
+    }
+        return coins;
     }
 
     private boolean canHeroMove(Position position) {
