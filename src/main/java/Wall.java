@@ -7,10 +7,9 @@ public class Wall extends Element{
     public Wall(int x, int y){
         super(x,y);
     }
-    public void draw(TextGraphics graphics)
-    {
-        String color = "#FF17F3";
-        String symbol = "|";
+    public void draw(TextGraphics graphics) {
+        final String color = "#FF17F3";
+        final String symbol = "|";
         graphics.setForegroundColor(TextColor.Factory.fromString(color));
         graphics.putString(new TerminalPosition(position.getX(),position.getY()), symbol);
     }

@@ -9,9 +9,9 @@ public class Coin extends Element {
     }
 
     public void draw(TextGraphics graphics) {
-        String color = "#F7E731";
-        String symbol = "o";
+        final String color = "#F7E731";
+        final String symbol = "o";
         graphics.setForegroundColor(TextColor.Factory.fromString(color));
-        graphics.putString(new TerminalPosition(position.getX(), position.getY()), symbol);
+        graphics.putString(new TerminalPosition(getPosition().getX(), getPosition().getY()), symbol);
     }
 }
