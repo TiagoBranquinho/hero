@@ -1,6 +1,7 @@
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class Arena {
     private final Hero hero;
     private final TextGraphics graphics;
     private final List<Wall> walls;
-    private final List<Coin> coins;
+    private List<Coin> coins;
     private final List<Monster> monsters;
     private final Screen screen;
 
@@ -25,14 +26,16 @@ public class Arena {
         this.screen = screen;
         graphics = screen.newTextGraphics();
         walls = createWalls();
-        coins = createCoins();
-        monsters = createMonsters();
+        int coinsNumber = 5;
+        coins = createCoins(coinsNumber);
+        int monstersNumber = 2;
+        monsters = createMonsters(monstersNumber);
     }
 
-    private List<Monster> createMonsters() {
+    private List<Monster> createMonsters(int monstersNumber) {
         List<Monster> monsters = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < monstersNumber; i++) {
             monsters.add(new Monster(random.nextInt(width - 2) + 1,random.nextInt(height - 2) + 1));
         }
         return monsters;
@@ -51,16 +54,23 @@ public class Arena {
         return walls;
     }
 
-    private List<Coin> createCoins() {
+    private List<Coin> createCoins(int coinsNumber) {
         int coin_x,coin_y;
         Random random = new Random();
         List<Coin> coins = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < coinsNumber; i++) {
             do{
                 coin_x = random.nextInt(width - 2) + 1;
                 coin_y = random.nextInt(height - 2) + 1;
             } while(new Position(coin_x,coin_y).equals(hero.getPosition()));
             coins.add(new Coin(coin_x,coin_y));
+        }
+        for(int i = 0; i < coinsNumber - 1; i++){
+            for(int j = i+1; j < coinsNumber; j++){
+                if(coins.get(i).getPosition().equals(coins.get(j).getPosition())){
+                    createCoins(coinsNumber);
+                }
+            }
         }
         return coins;
     }
@@ -106,10 +116,22 @@ public class Arena {
                 monster.setPosition(monster.move(hero.getPosition()));
         }
         if(verifyMonsterCollisions()){
-            graphics.putCSIStyledString(height/2,width/3,"You lost!");
-            screen.refresh();
+            while(true) {
+                graphics.putCSIStyledString(1,height / 2 , "You Lost!'q' to exit or 'r' to restart");
+                screen.refresh();
+                KeyStroke key = screen.readInput();
+                if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') {
+                    screen.close();
+                    break;
+                }
+                if(key.getKeyType() == KeyType.Character && key.getCharacter() == 'r'){
+                    screen.close();
+                    Game game = new Game();
+                    game.run();
+                    break;
+                }
+            }
             screen.close();
-            System.out.println("You lost!");
         }
     }
 
@@ -134,9 +156,16 @@ public class Arena {
             if(coin.getPosition().equals(position)) {
                 coins.remove(coin);
                 if(coins.size() == 0){
-                    graphics.putCSIStyledString(height/2,width/3,"You Won!");
-                    screen.close();
-                    System.out.println("You won!");
+                    while(true) {
+                        screen.refresh();
+                        graphics.putCSIStyledString(1, height/ 2, "You Won! Press 'q' to exit");
+                        screen.refresh();
+                        KeyStroke key = screen.readInput();
+                        if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') {
+                            screen.close();
+                            break;
+                        }
+                    }
                 }
                 return coins;
             }

@@ -40,10 +40,13 @@ public class Game {
         while(true) {
             draw();
             KeyStroke key = screen.readInput();
+
             if(key.getKeyType() == KeyType.EOF)
                 break;
             if(key.getKeyType() == KeyType.Character && key.getCharacter() == 'q')
                 screen.close();
+            else if(key.getKeyType() != KeyType.ArrowDown && key.getKeyType() != KeyType.ArrowUp && key.getKeyType() != KeyType.ArrowRight && key.getKeyType() != KeyType.ArrowLeft)
+                continue;
             arena.processKey(key);
         }
     }
